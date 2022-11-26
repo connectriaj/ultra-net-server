@@ -19,12 +19,21 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     const serviceCollection = client.db("ultraNet").collection("services");
+    const allServiceCollection = client.db("ultraNet").collection("allServices");
+
 
     app.get("/services", async (req, res) => {
       const query = {};
       const cursor = serviceCollection.find(query);
       const services = await cursor.limit(3).toArray();
       res.send(services);
+    });
+
+    app.get("/all-services", async (req, res) => {
+      const query = {};
+      const cursor = allServiceCollection.find(query);
+      const allServices = await cursor.toArray();
+      res.send(allServices);
     });
   } finally {
     // nothing to do here
